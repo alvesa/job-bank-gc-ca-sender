@@ -32,7 +32,7 @@ public class JobBankSenderService : IJobBankSenderService
         await this._documentManagerService.FindFolderAsync();
         await this._documentManagerService.CreateFolderAsync();
         await this._documentManagerService.CreateFolderAsync();
-        await this._documentManagerService.SendAsync();
+        await this._documentManagerService.SendJobToFolderAsync();
     }
 
     private async Task EmailBuilder() {
