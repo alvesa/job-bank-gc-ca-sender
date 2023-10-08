@@ -21,7 +21,7 @@ public class JobBankSenderController : ControllerBase
     {
         _logger.Log(LogLevel.Information, "Initializing JobBankSender");
         var response = await _jobBankSenderService.SendAsync(request);
-        return Created($"{response}", request);
+        return Created("Email sent successfuly", response);
     }
 }
 

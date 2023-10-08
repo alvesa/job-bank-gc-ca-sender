@@ -1,5 +1,7 @@
 
 
+using JobBank.Jobs.Apply.Api.Controllers;
+
 namespace JobBank.Jobs.Apply.Domain;
 
 public class JobBankSenderService : IJobBankSenderService
@@ -15,9 +17,17 @@ public class JobBankSenderService : IJobBankSenderService
         _documentManagerService = documentManagerService;
     }
 
-    public async Task SendAsync()
+     public async Task<bool> SendAsync(JobSenderRequest request)
     {
-        await this.Send();
+        try
+        {
+            await this.Send();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     private async Task Send() {

@@ -5,6 +5,6 @@ public class EmailRepository : IEmailRepository
 {
     public async Task SendEmailAsync()
     {
-        await Task.Run(() => Console.WriteLine("Sending email..."));
+        await Task.Run(() => Console.WriteLine("Sending email repository..."));
     }
 }
