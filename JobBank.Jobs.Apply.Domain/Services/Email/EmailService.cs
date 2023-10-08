@@ -2,11 +2,11 @@ namespace JobBank.Jobs.Apply.Domain;
 
 public class EmailService : IEmailService
 {
-    private readonly IEmailRespository _emailRespository;
+    private readonly IEmailRepository _emailRepository;
 
-    public EmailService(IEmailRespository emailRespository)
+    public EmailService(IEmailRepository emailRepository)
     {
-        _emailRespository = emailRespository;
+        _emailRepository = emailRepository;
     }
 
     async Task IEmailService.PrepareBody()
@@ -22,6 +22,6 @@ public class EmailService : IEmailService
     async Task IEmailService.SendEmailAsync()
     {
         await Task.Run(() => Console.WriteLine("Sending email..."));
-        await _emailRespository.SendEmailAsync();
+        await _emailRepository.SendEmailAsync();
     }
 }

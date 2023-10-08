@@ -1,7 +1,7 @@
 
 namespace JobBank.Jobs.Apply.Infra;
 
-public class DocumentRepository : IDocumentManagerRepository
+public class DocumentManagerRepository : IDocumentManagerRepository
 {
     public async Task CreateCoverLetterAsync()
     {

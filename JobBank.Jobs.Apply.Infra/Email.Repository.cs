@@ -1,7 +1,7 @@
 
 namespace JobBank.Jobs.Apply.Infra;
 
-public class EmailRepository : IEmailRespository
+public class EmailRepository : IEmailRepository
 {
     public async Task SendEmailAsync()
     {

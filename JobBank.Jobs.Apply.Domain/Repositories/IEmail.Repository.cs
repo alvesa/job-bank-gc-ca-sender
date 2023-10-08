@@ -1,3 +1,3 @@
-public interface IEmailRespository {
+public interface IEmailRepository {
     Task SendEmailAsync();
 }

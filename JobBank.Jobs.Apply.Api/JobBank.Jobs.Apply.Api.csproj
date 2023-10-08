@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JobBank.Jobs.Apply.Models\JobBank.Jobs.Apply.Models.csproj" />
+    <ProjectReference Include="..\JobBank.Jobs.Apply.Domain\JobBank.Jobs.Apply.Domain.csproj" />
+    <ProjectReference Include="..\JobBank.Jobs.Apply.Infra\JobBank.Jobs.Apply.Infra.csproj" />
   </ItemGroup>
 
 </Project>

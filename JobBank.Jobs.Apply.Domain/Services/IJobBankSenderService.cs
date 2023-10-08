@@ -1,4 +1,6 @@
+using JobBank.Jobs.Apply.Api.Controllers;
+
 namespace JobBank.Jobs.Apply.Domain;
 public interface IJobBankSenderService {
-    Task SendAsync();
+    Task<bool> SendAsync(JobSenderRequest request);
 }

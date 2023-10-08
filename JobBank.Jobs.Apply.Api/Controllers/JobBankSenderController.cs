@@ -1,3 +1,4 @@
+using JobBank.Jobs.Apply.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobBank.Jobs.Apply.Api.Controllers;
@@ -7,17 +8,20 @@ namespace JobBank.Jobs.Apply.Api.Controllers;
 public class JobBankSenderController : ControllerBase
 {
     private readonly ILogger<JobBankSenderController> _logger;
+    private readonly IJobBankSenderService _jobBankSenderService;
 
-    public JobBankSenderController(ILogger<JobBankSenderController> logger)
+    public JobBankSenderController(ILogger<JobBankSenderController> logger, IJobBankSenderService jobBankSenderService)
     {
         _logger = logger;
+        _jobBankSenderService = jobBankSenderService;
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] JobSenderRequest request)
+    public async Task<IActionResult> Post([FromBody] JobSenderRequest request)
     {
         _logger.Log(LogLevel.Information, "Initializing JobBankSender");
-        return Created("", request);
+        var response = await _jobBankSenderService.SendAsync(request);
+        return Created($"{response}", request);
     }
 }
 
