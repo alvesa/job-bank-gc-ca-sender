@@ -1,6 +1,6 @@
 
 
-using JobBank.Jobs.Apply.Api.Controllers;
+using JobBank.Jobs.Apply.Domain.Models;
 
 namespace JobBank.Jobs.Apply.Domain;
 
@@ -19,7 +19,7 @@ public class JobBankSenderService : IJobBankSenderService
         _documentManagerService = documentManagerService;
     }
 
-    public async Task<bool> SendAsync(JobSenderRequest request)
+    public async Task<bool> SendAsync(JobSenderDTO request)
     {
         try
         {
@@ -32,7 +32,7 @@ public class JobBankSenderService : IJobBankSenderService
         }
     }
 
-    private async Task Send(JobSenderRequest request)
+    private async Task Send(JobSenderDTO request)
     {
         // Step 1: Structuring the email contents
         EmailBuilder(request.Job);
@@ -44,20 +44,20 @@ public class JobBankSenderService : IJobBankSenderService
         await _emailService.SendEmailAsync(request.Email.To);
     }
 
-    private async Task DocumentBuilder(Job jobOptions)
+    private async Task DocumentBuilder(JobDTO jobOptions)
     {
         await _documentManagerService.FindFolderAsync();
         await _documentManagerService.CreateFolderAsync();
         await _documentManagerService.SendJobToFolderAsync();
     }
 
-    private void EmailBuilder(Job jobOptions)
+    private void EmailBuilder(JobDTO jobOptions)
     {
-        _emailService.PrepareSubject(jobOptions.JobOffer, jobOptions.JobId);
-        _emailService.PrepareBody(jobOptions.JobOffer);
+        _emailService.PrepareSubject(jobOptions.Offer, jobOptions.Number);
+        _emailService.PrepareBody(jobOptions.Offer);
     }
 
-    private async Task CoverLetterBuilder(Job jobOptions)
+    private async Task CoverLetterBuilder(JobDTO jobOptions)
     {
         await _coverLetterService.CreateCoverLeter(jobOptions);
         await _coverLetterService.GetCoverLetter();

@@ -11,9 +11,9 @@ public class Email {
 }
 
 public class Job {
-    public required string JobId { get; set; }
-    public required string JobOffer { get; set; }
-    public required string JobLink { get; set; }
+    public required string Number { get; set; }
+    public required string Offer { get; set; }
+    public required string Link { get; set; }
     public string? CompanyName { get; set; }
 }
 

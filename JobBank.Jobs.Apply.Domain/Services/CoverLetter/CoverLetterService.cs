@@ -1,6 +1,6 @@
 
 
-using JobBank.Jobs.Apply.Api.Controllers;
+using JobBank.Jobs.Apply.Domain.Models;
 
 namespace JobBank.Jobs.Apply.Domain;
 
@@ -13,9 +13,9 @@ public class CoverLetterService : ICoverLetterService
         _documentManagerRepository = documentManagerRepository;
     }
 
-    public async Task CreateCoverLeter(Job jobOptions)
+    public async Task CreateCoverLeter(JobDTO jobOptions)
     {
-        await Task.Run(() => Console.WriteLine($"Creating coverLetter... {jobOptions.CompanyName} - {jobOptions.JobOffer}"));
+        await Task.Run(() => Console.WriteLine($"Creating coverLetter... {jobOptions.CompanyName} - {jobOptions.Offer}"));
         await _documentManagerRepository.CreateCoverLetterAsync();
     }
 

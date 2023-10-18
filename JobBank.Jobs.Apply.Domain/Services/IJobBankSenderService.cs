@@ -1,6 +1,6 @@
-using JobBank.Jobs.Apply.Api.Controllers;
+using JobBank.Jobs.Apply.Domain.Models;
 
 namespace JobBank.Jobs.Apply.Domain;
 public interface IJobBankSenderService {
-    Task<bool> SendAsync(JobSenderRequest request);
+    Task<bool> SendAsync(JobSenderDTO request);
 }

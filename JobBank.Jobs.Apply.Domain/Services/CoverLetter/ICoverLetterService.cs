@@ -1,11 +1,11 @@
 
 
-using JobBank.Jobs.Apply.Api.Controllers;
+using JobBank.Jobs.Apply.Domain.Models;
 
 namespace JobBank.Jobs.Apply.Domain;
 
 public interface ICoverLetterService
 {
-    Task CreateCoverLeter(Job jobOptions);
+    Task CreateCoverLeter(JobDTO jobOptions);
     Task GetCoverLetter();
 }
