@@ -10,6 +10,8 @@ public class JobBankSenderService : IJobBankSenderService
     private readonly IEmailService _emailService;
     private readonly IDocumentManagerService _documentManagerService;
 
+    public int MyProperty { get; set; }
+
     public JobBankSenderService(ICoverLetterService coverLetterService, IEmailService emailService, IDocumentManagerService documentManagerService)
     {
         _coverLetterService = coverLetterService;
@@ -17,11 +19,11 @@ public class JobBankSenderService : IJobBankSenderService
         _documentManagerService = documentManagerService;
     }
 
-     public async Task<bool> SendAsync(JobSenderRequest request)
+    public async Task<bool> SendAsync(JobSenderRequest request)
     {
         try
         {
-            await this.Send();
+            await Send(request);
             return true;
         }
         catch (Exception)
@@ -30,28 +32,34 @@ public class JobBankSenderService : IJobBankSenderService
         }
     }
 
-    private async Task Send() {
-
-        await this.EmailBuilder();
-        await this.CoverLetterBuilder();
-        await this.DocumentBuilder();
-        await _emailService.SendEmailAsync();
+    private async Task Send(JobSenderRequest request)
+    {
+        // Step 1: Structuring the email contents
+        EmailBuilder(request.Job);
+        // Step 2: Updating the cover letter statements
+        await CoverLetterBuilder(request.Job);
+        // Step 3: Documenting the application sent
+        await DocumentBuilder(request.Job);
+        // Step 4: Sending the email
+        await _emailService.SendEmailAsync(request.Email.To);
     }
 
-    private async Task DocumentBuilder() {
-        await this._documentManagerService.FindFolderAsync();
-        await this._documentManagerService.CreateFolderAsync();
-        await this._documentManagerService.CreateFolderAsync();
-        await this._documentManagerService.SendJobToFolderAsync();
+    private async Task DocumentBuilder(Job jobOptions)
+    {
+        await _documentManagerService.FindFolderAsync();
+        await _documentManagerService.CreateFolderAsync();
+        await _documentManagerService.SendJobToFolderAsync();
     }
 
-    private async Task EmailBuilder() {
-        await _emailService.PrepareSubject();
-        await _emailService.PrepareBody();
+    private void EmailBuilder(Job jobOptions)
+    {
+        _emailService.PrepareSubject(jobOptions.JobOffer, jobOptions.JobId);
+        _emailService.PrepareBody(jobOptions.JobOffer);
     }
 
-    private async Task CoverLetterBuilder() {
-        await _coverLetterService.CreateCoverLeter();
+    private async Task CoverLetterBuilder(Job jobOptions)
+    {
+        await _coverLetterService.CreateCoverLeter(jobOptions);
         await _coverLetterService.GetCoverLetter();
     }
 }

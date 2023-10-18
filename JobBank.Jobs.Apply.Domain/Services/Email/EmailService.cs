@@ -4,24 +4,29 @@ public class EmailService : IEmailService
 {
     private readonly IEmailRepository _emailRepository;
 
+    public string To { get; private set; }
+    public string Subject { get; private  set; }
+    public string HtmlBody { get; private set; }
+
     public EmailService(IEmailRepository emailRepository)
     {
         _emailRepository = emailRepository;
     }
 
-    async Task IEmailService.PrepareBody()
+    async void IEmailService.PrepareBody(string jobOffer)
     {
-        await Task.Run(() => Console.WriteLine("Preparing body..."));
+        this.HtmlBody = $"I've found in jobbank.gc.ca website for a {jobOffer} position and I would like to apply for it.";
     }
 
-    async Task IEmailService.PrepareSubject()
+    async void  IEmailService.PrepareSubject(string jobOffer, string jobId)
     {
-        await Task.Run(() => Console.WriteLine("Preparing subject..."));
+        this.Subject = $"Job Bank Canada {jobId} - {jobOffer}";
     }
 
-    async Task IEmailService.SendEmailAsync()
+    async Task IEmailService.SendEmailAsync(string To)
     {
-        await Task.Run(() => Console.WriteLine("Sending email..."));
+        this.To = To;
+        var sendMail = $"Sending email to {this.To} with {this.Subject} and {this.HtmlBody} body...";
         await _emailRepository.SendEmailAsync();
     }
 }

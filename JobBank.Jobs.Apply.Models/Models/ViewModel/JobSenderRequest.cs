@@ -1,18 +1,22 @@
 namespace JobBank.Jobs.Apply.Api.Controllers;
 
 public class JobSenderRequest {
-    public required EmailOptions EmailOptions { get; set; }
-    public required JobBankOptions JobBankOptions { get; set; }
+    public required Email Email { get; set; }
+    public required Job Job { get; set; }
+    public required MetaOptions Meta { get; set; }
 }
 
-public class EmailOptions {
+public class Email {
     public required string To { get; set; }
-    public required string Subject { get; set; }
-    public string? Body { get; set; }
 }
 
-public class JobBankOptions {
+public class Job {
     public required string JobId { get; set; }
-    public required string JobOfferName { get; set; }
+    public required string JobOffer { get; set; }
+    public required string JobLink { get; set; }
     public string? CompanyName { get; set; }
+}
+
+public class MetaOptions {
+    public DateTime Date { get; set; }
 }
