@@ -1,4 +1,6 @@
 
+using JobBank.Jobs.Apply.Domain.Models;
+
 namespace JobBank.Jobs.Apply.Domain;
 public class DocumentManagerService : IDocumentManagerService
 {
@@ -21,9 +23,9 @@ public class DocumentManagerService : IDocumentManagerService
         await _documentManagerRepository.FindFolderAsync();
     }
 
-    async public Task SendJobToFolderAsync()
+    async public Task SendJobToFolderAsync(JobDTO job)
     {
-        await Task.Run(() => Console.WriteLine("Sending job entry to folder..."));
+        await Task.Run(() => Console.WriteLine($"Sending job entry to folder... for company: {job.CompanyName} with link {job.Link}"));
         await _documentManagerRepository.SendJobToFolderAsync();
     }
 }

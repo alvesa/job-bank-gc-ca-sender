@@ -48,7 +48,7 @@ public class JobBankSenderService : IJobBankSenderService
     {
         await _documentManagerService.FindFolderAsync();
         await _documentManagerService.CreateFolderAsync();
-        await _documentManagerService.SendJobToFolderAsync();
+        await _documentManagerService.SendJobToFolderAsync(jobOptions);
     }
 
     private void EmailBuilder(JobDTO jobOptions)
