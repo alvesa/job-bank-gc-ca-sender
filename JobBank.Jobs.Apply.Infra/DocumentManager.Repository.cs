@@ -1,8 +1,17 @@
 
+using JobBank.Jobs.Apply.Domain.Vendors;
+
 namespace JobBank.Jobs.Apply.Infra;
 
 public class DocumentManagerRepository : IDocumentManagerRepository
 {
+    private readonly IGoogleDriveRepository googleDriveRepository;
+
+    public DocumentManagerRepository(IGoogleDriveRepository googleDriveRepository)
+    {
+        this.googleDriveRepository = googleDriveRepository;
+    }
+
     public async Task CreateCoverLetterAsync()
     {
         await Task.Run(() => Console.WriteLine("Creating cover letter repository..."));
@@ -20,7 +29,7 @@ public class DocumentManagerRepository : IDocumentManagerRepository
 
     public async Task GetCoverLetterAsync()
     {
-        await Task.Run(() => Console.WriteLine("Getting cover letter repository..."));
+        await this.googleDriveRepository.ListFiles();
     }
 
     public async Task GetCurriculum()
