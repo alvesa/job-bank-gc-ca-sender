@@ -34,3 +34,4 @@ msbuild.wrn
 .vs/
 
 g-drive-credentials.json
+appsettings.local.json

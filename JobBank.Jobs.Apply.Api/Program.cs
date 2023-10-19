@@ -1,6 +1,7 @@
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using JobBank.Jobs.Apply.Domain;
+using JobBank.Jobs.Apply.Domain.Configs;
 using JobBank.Jobs.Apply.Domain.Vendors;
 using JobBank.Jobs.Apply.Infra;
 using JobBank.Jobs.Apply.Infra.Vendors;
@@ -23,6 +24,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder
+    .Services
+    .Configure<JobBankConfiguration>(builder.Configuration.GetSection(JobBankConfiguration.ConfigureName));
 
 builder.Services.AddSingleton<IClientService>(new DriveService(new BaseClientService.Initializer
 {
