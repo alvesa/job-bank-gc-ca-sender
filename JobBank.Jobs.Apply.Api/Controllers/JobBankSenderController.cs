@@ -48,8 +48,9 @@ public class JobBankSenderController : ControllerBase
     }
 
     [HttpGet("/google-redirect-response")]
-    public async Task<IActionResult> GetGoogleRedirectAsync() {
-        return Ok();
+    public async Task<IActionResult> GetGoogleRedirectAsync()
+    {
+        return await Task.FromResult(Ok(true));
     }
 }
 

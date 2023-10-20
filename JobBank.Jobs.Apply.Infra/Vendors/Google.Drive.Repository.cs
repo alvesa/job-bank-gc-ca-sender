@@ -1,5 +1,6 @@
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive.v3;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using JobBank.Jobs.Apply.Domain.Vendors;
 
@@ -27,18 +28,16 @@ public class GoogleDriveRepository : IGoogleDriveRepository
     {
         try
         {
-            var clientSecrets = await GoogleClientSecrets.FromFileAsync("./g-drive-credentials.json");
+            var clientSecrets = await GoogleClientSecrets.FromFileAsync("./g-docs-credentials.json");
+
+            var scopes = new string[] { DocsService.ScopeConstants.DriveFile, DocsService.ScopeConstants.Documents, DocsService.ScopeConstants.DriveFile };
 
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 clientSecrets.Secrets,
-                new[] { DriveService.ScopeConstants.DriveFile },
+                scopes,
                 "user",
                 CancellationToken.None);
 
-            var service = new DriveService.Initializer()
-            {
-                HttpClientInitializer = credential
-            };
         }
         catch (Exception ex)
         {

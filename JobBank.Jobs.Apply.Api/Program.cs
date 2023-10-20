@@ -1,4 +1,4 @@
-using Google.Apis.Drive.v3;
+using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using JobBank.Jobs.Apply.Domain;
 using JobBank.Jobs.Apply.Domain.Configs;
@@ -29,7 +29,7 @@ var configuration =
     new ConfigurationBuilder()
         .AddConfiguration(builder.Configuration.GetSection(JobBankConfiguration.ConfigureName)).Build();
 
-builder.Services.AddSingleton<IClientService>(new DriveService(new BaseClientService.Initializer
+builder.Services.AddSingleton<IClientService>(new DocsService(new BaseClientService.Initializer
 {
     ApiKey = configuration["ApiKey"],
     ApplicationName = configuration["ApplicationName"],
