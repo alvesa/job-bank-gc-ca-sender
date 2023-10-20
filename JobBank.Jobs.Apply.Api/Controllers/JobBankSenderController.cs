@@ -46,6 +46,11 @@ public class JobBankSenderController : ControllerBase
 
         return Created("Email sent successfuly", response);
     }
+
+    [HttpGet("/google-redirect-response")]
+    public async Task<IActionResult> GetGoogleRedirectAsync() {
+        return Ok();
+    }
 }
 
 

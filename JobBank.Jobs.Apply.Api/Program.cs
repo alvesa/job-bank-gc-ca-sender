@@ -25,16 +25,22 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder
-    .Services
-    .Configure<JobBankConfiguration>(builder.Configuration.GetSection(JobBankConfiguration.ConfigureName));
+var configuration =
+    new ConfigurationBuilder()
+        .AddConfiguration(builder.Configuration.GetSection(JobBankConfiguration.ConfigureName)).Build();
 
 builder.Services.AddSingleton<IClientService>(new DriveService(new BaseClientService.Initializer
 {
-    ApiKey = "[API_KEY]",
-    ApplicationName = "[APP_NAME]"
-})
-);
+    ApiKey = configuration["ApiKey"],
+    ApplicationName = configuration["ApplicationName"],
+    // HttpClientInitializer =
+    //     GoogleWebAuthorizationBroker.AuthorizeAsync(
+    //         GoogleClientSecrets.FromFileAsync("./g-drive-credentials.json").Result.Secrets,
+    //         new[] { DriveService.ScopeConstants.DriveFile },
+    //         "user",
+    //         CancellationToken.None).Result
+
+}));
 
 var app = builder.Build();
 

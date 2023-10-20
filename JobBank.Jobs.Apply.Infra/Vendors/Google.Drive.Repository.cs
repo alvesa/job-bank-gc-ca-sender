@@ -1,9 +1,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
-using Google.Apis.Util.Store;
 using JobBank.Jobs.Apply.Domain.Vendors;
-using Newtonsoft.Json;
 
 namespace JobBank.Jobs.Apply.Infra.Vendors;
 public class GoogleDriveRepository : IGoogleDriveRepository
@@ -29,31 +27,20 @@ public class GoogleDriveRepository : IGoogleDriveRepository
     {
         try
         {
-            var test = this.clientService.ApiKey;
-            var clientId = "[CLIENT_ID]";
-            var clientSecret = "[CLIENT_SECRET]";
-
-            string[] Scopes = { DriveService.Scope.DriveReadonly };
+            var clientSecrets = await GoogleClientSecrets.FromFileAsync("./g-drive-credentials.json");
 
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                new ClientSecrets
-                {
-                    ClientId = clientId,
-                    ClientSecret = clientSecret
-                },
-                Scopes,
+                clientSecrets.Secrets,
+                new[] { DriveService.ScopeConstants.DriveFile },
                 "user",
-                CancellationToken.None
-            // new FileDataStore("Google.Apis.Auth", true)
-            );
+                CancellationToken.None);
 
-            var service = new DriveService(new BaseClientService.Initializer
+            var service = new DriveService.Initializer()
             {
-                HttpClientInitializer = credential,
-                ApplicationName = "[APP_NAME]"
-            });
+                HttpClientInitializer = credential
+            };
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }
