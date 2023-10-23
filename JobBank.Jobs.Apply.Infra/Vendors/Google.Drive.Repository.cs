@@ -32,11 +32,19 @@ public class GoogleDriveRepository : IGoogleDriveRepository
 
             var scopes = new string[] { DocsService.ScopeConstants.DriveFile, DocsService.ScopeConstants.Documents, DocsService.ScopeConstants.DriveFile };
 
+            var initializer = new GoogleAuthorizationCodeFlow.Initializer
+            {
+                Scopes = scopes,
+                ClientSecrets = clientSecrets.Secrets
+            };
+
             var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                clientSecrets.Secrets,
+                initializer,
                 scopes,
                 "user",
                 CancellationToken.None);
+
+            Console.WriteLine(credential);
 
         }
         catch (Exception ex)
