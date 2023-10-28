@@ -21,3 +21,9 @@
 
 - email sender
 - n-tier application
+
+## Libraries
+
+### Google Docs
+
+- <https://developers.google.com/docs/api/reference/rest?hl=pt-br>
