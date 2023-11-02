@@ -7,24 +7,18 @@ namespace JobBank.Jobs.Apply.Domain;
 public class JobBankSenderService : IJobBankSenderService
 {
     private readonly ICoverLetterService _coverLetterService;
-    private readonly IEmailService _emailService;
-    private readonly IDocumentManagerService _documentManagerService;
-
     public int MyProperty { get; set; }
 
-    public JobBankSenderService(ICoverLetterService coverLetterService, IEmailService emailService, IDocumentManagerService documentManagerService)
+    public JobBankSenderService(ICoverLetterService coverLetterService)
     {
         _coverLetterService = coverLetterService;
-        _emailService = emailService;
-        _documentManagerService = documentManagerService;
     }
 
     public async Task<bool> SendAsync(JobSenderDTO request)
     {
         try
         {
-            await Send(request);
-            return true;
+            return await Send(request);
         }
         catch (Exception)
         {
@@ -32,34 +26,35 @@ public class JobBankSenderService : IJobBankSenderService
         }
     }
 
-    private async Task Send(JobSenderDTO request)
+    private async Task<bool> Send(JobSenderDTO request)
     {
-        // Step 1: Structuring the email contents
-        EmailBuilder(request.Job);
-        // Step 2: Updating the cover letter statements
-        await CoverLetterBuilder(request.Job);
-        // Step 3: Documenting the application sent
-        await DocumentBuilder(request.Job);
-        // Step 4: Sending the email
-        await _emailService.SendEmailAsync(request.Email.To);
+        try
+        {
+            // Step 1: Updating the cover letter statements
+            return await CoverLetterBuilder(request.Job);
+            // Step 2: Structuring the email contents
+            // Step 3: Documenting the application sent
+            // Step 4: Sending the email
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
     }
 
-    private async Task DocumentBuilder(JobDTO jobOptions)
+    private async Task<bool> CoverLetterBuilder(JobDTO jobOptions)
     {
-        await _documentManagerService.FindFolderAsync();
-        await _documentManagerService.CreateFolderAsync();
-        await _documentManagerService.SendJobToFolderAsync(jobOptions);
-    }
+        try
+        {
+            await _coverLetterService.CreateCoverLeter(jobOptions);
+            await _coverLetterService.GetCoverLetter();
 
-    private void EmailBuilder(JobDTO jobOptions)
-    {
-        _emailService.PrepareSubject(jobOptions.Offer, jobOptions.Number);
-        _emailService.PrepareBody(jobOptions.Offer);
-    }
-
-    private async Task CoverLetterBuilder(JobDTO jobOptions)
-    {
-        await _coverLetterService.CreateCoverLeter(jobOptions);
-        await _coverLetterService.GetCoverLetter();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
     }
 }

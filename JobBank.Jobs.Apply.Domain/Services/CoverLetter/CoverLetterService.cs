@@ -15,7 +15,6 @@ public class CoverLetterService : ICoverLetterService
 
     public async Task CreateCoverLeter(JobDTO jobOptions)
     {
-        await Task.Run(() => Console.WriteLine($"Creating coverLetter... {jobOptions.CompanyName} - {jobOptions.Offer}"));
         await _documentManagerRepository.CreateCoverLetterAsync();
     }
 
